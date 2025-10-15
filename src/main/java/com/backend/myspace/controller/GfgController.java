@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/gfg")
+@RequestMapping("/api/gfg")
 public class GfgController {
 
     @Autowired
