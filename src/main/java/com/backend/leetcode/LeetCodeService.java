@@ -1,5 +1,6 @@
 package com.backend.leetcode;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -113,15 +114,18 @@ public class LeetCodeService {
     }
 
     /**
-     * Executes a GraphQL query against the LeetCode API with retry and error handling.
+     * Executes a GraphQL query against the LeetCode API with retry and error
+     * handling.
      */
     private Mono<Object> executeGraphQL(String query, Map<String, Object> variables) {
         return webClient.post()
                 .uri("/graphql")
-                .bodyValue(Map.of("query", query, "variables", variables))
+                .header("Content-Type", "application/json")
+                .bodyValue(Map.of("query", query, "variables", Map.of()))
                 .retrieve()
                 .bodyToMono(Object.class)
-                .retry(2)
+                .timeout(Duration.ofSeconds(8))
+                .retry(1)
                 .onErrorResume(e -> {
                     log.warn("LeetCode API call failed: {}", e.getMessage());
                     return Mono.just(Map.of());

@@ -1,10 +1,13 @@
-
-FROM eclipse-temurin:21-jdk
+FROM ubuntu:22.04
 
 WORKDIR /app
 
-COPY target/myspace-0.0.1-SNAPSHOT.jar app.jar
+COPY target/myspace .
+
+RUN chmod +x myspace
+
+ENV PORT=8080
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "app.jar"]
+CMD ["./myspace"]
