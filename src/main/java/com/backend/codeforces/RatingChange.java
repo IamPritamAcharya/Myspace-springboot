@@ -1,4 +1,4 @@
-package com.backend.myspace.model;
+package com.backend.codeforces;
 
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package com.backend.myspace.service;
+package com.backend.gfg;
 
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -7,17 +7,20 @@ import java.util.regex.Pattern;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.backend.myspace.model.GfgHeatmapResponse;
-
 import reactor.core.publisher.Mono;
 
 @Service
-public class GfgHeatmapService {
+public class GfgService {
+
+    private static final Pattern BUILD_ID_PATTERN =
+            Pattern.compile("/_next/static/([a-zA-Z0-9_-]+)/_ssgManifest\\.js");
 
     private final WebClient webClient;
 
-    public GfgHeatmapService(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("https://www.geeksforgeeks.org").build();
+    public GfgService(WebClient.Builder webClientBuilder) {
+        this.webClient = webClientBuilder
+                .baseUrl("https://www.geeksforgeeks.org")
+                .build();
     }
 
     public Mono<Map<String, Integer>> getHeatMap(String userHandle) {
@@ -40,12 +43,10 @@ public class GfgHeatmapService {
     }
 
     private String extractBuildIdFromHtml(String html) {
-        Pattern pattern = Pattern.compile("/_next/static/([a-zA-Z0-9_-]+)/_ssgManifest\\.js");
-        Matcher matcher = pattern.matcher(html);
+        Matcher matcher = BUILD_ID_PATTERN.matcher(html);
         if (matcher.find()) {
             return matcher.group(1);
-        } else {
-            throw new RuntimeException("Build ID not found in HTML");
         }
+        throw new RuntimeException("Build ID not found in HTML");
     }
 }

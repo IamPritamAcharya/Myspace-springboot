@@ -1,6 +1,6 @@
-package com.backend.myspace.model;
+package com.backend.contest;
 
-public record ContestDTO(
+public record ContestDto(
         String name,
         String platform,
         long startTime,
