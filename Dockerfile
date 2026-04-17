@@ -1,4 +1,5 @@
-FROM ghcr.io/graalvm/native-image:ol9-java21 AS builder
+
+FROM ghcr.io/graalvm/native-image-community:21 AS builder
 
 WORKDIR /app
 COPY . .
